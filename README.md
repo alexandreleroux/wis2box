@@ -24,6 +24,14 @@ cp wis2node.env dev.env
 vi dev.env
 ```
 
+suggestions for simplest configuration:
+
+```
+   replace all occurrences of ${WIS2NODE_DATA} by ./wis2node-data in dev.env
+   mkdir wisnode-data # match the default in first line of dev.env
+   mkdir wisnode-data/config
+
+```
 ## Deploying with Docker Compose
 
 ```bash
