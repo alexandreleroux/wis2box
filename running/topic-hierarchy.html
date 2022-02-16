@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Topic hierarchy &#8212; wis2box 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data mappings" href="data-mappings.html" />
+    <link rel="prev" title="Concepts" href="concepts.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="data-mappings.html" title="Data mappings"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="concepts.html" title="Concepts"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">wis2box 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Running</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="topic-hierarchy">
+<span id="id1"></span><h1>Topic hierarchy<a class="headerlink" href="#topic-hierarchy" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The WIS 2.0 topic hiearchies are currently in development. wis2box implementation
+of the topic hiearchies will change, based on ratifications/updates of the topic
+hierarchies in WMO technical regulations and publications.</p>
+</div>
+<p>wis2box implements the WIS 2.0 topic hierarchies, which are designed to efficiently
+categorize and classify data, by implementing directory hierarchies. For example,
+the below exemplifies a WIS 2.0 topic hierarchy as implemented in wis2box:</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>WIS 2.0 topic hierarchy</p></th>
+<th class="head"><p>wis2box directory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">foo.bar.baz</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">foo/bar/baz</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>wis2box topic hierarchies are managed <strong>under</strong> the various wis2box directories, and
+are used as part of both design time and runtime workflow.</p>
+<p>To create a wis2box topic hierarchy:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wis2box data setup --topic-hierarchy foo.bar.baz
+</pre></div>
+</div>
+<p>This will create the topic hierarchy under the required wis2box directories in support
+of automated processing and publishing.</p>
+<p>To view a given topic hierarchy setup:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wis2box data info --topic-hierarchy foo.bar.baz
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="concepts.html"
+                        title="previous chapter">Concepts</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="data-mappings.html"
+                        title="next chapter">Data mappings</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><p>
+    <p>
+        <a title="World Meteorological Organization" href="https://public.wmo.int"><img style="background: white;" title="WMO logo" alt="WMO logo" src="https://public.wmo.int/sites/all/themes/wmo/logo.png"/></a>
+    </p>
+</p>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="data-mappings.html" title="Data mappings"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="concepts.html" title="Concepts"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">wis2box 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Running</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2022, World Meteorological Organization (WMO)&lt;br/&gt;This work is licensed under a Creative Commons Attribution 4.0 International License.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

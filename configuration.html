@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Configuration &#8212; wis2box 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Administration" href="administration.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="administration.html" title="Administration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wis2box 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuration">
+<span id="id1"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>Once you have installed wis2box, it is time to setup the configuration. wis2box setup is based on
+a simple configuration that can be adjusted depending the user’s needs and deployment environment.</p>
+<div class="section" id="environment-variables">
+<h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
+<p>wis2box configuration is driven primarily by a small set of environment variables. The runtime
+configuration is defined in the <a class="reference external" href="https://en.wikipedia.org/wiki/Env">Env</a> format in a plain text file named <code class="docutils literal notranslate"><span class="pre">dev.env</span></code> and <code class="docutils literal notranslate"><span class="pre">docker/default.env</span></code>.</p>
+<p>Any values set in <code class="docutils literal notranslate"><span class="pre">dev.env</span></code> override the default environment variables in <code class="docutils literal notranslate"><span class="pre">docker/default.env</span></code>. For further / specialized
+configuration, see the sections below.</p>
+<div class="section" id="wis2box-host-datadir">
+<h3><code class="docutils literal notranslate"><span class="pre">WIS2BOX_HOST_DATADIR</span></code><a class="headerlink" href="#wis2box-host-datadir" title="Permalink to this headline">¶</a></h3>
+<p>The minimum required setting in <code class="docutils literal notranslate"><span class="pre">dev.env</span></code> is the <code class="docutils literal notranslate"><span class="pre">WIS2BOX_HOST_DATADIR</span></code> environment variable. Setting this
+value is <strong>required</strong> to map the wis2box data directory from the host system to the containers.</p>
+<p>It is recommended to set this value to an absolute path on your system.</p>
+</div>
+</div>
+<div class="section" id="sections">
+<h2>Sections<a class="headerlink" href="#sections" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A reference configuration can always be found in the wis2box <a class="reference external" href="https://github.com/wmo-im/wis2box/blob/main/docker/default.env">GitHub</a> repository. The <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a>
+uses a variant of <code class="docutils literal notranslate"><span class="pre">wis2box.env</span></code> with mappings to the test data, as an example. For complex installations,
+it is recommended to start configuring wis2box by copying the example <code class="docutils literal notranslate"><span class="pre">wis2box.env</span></code> file and modifying
+accordingly.</p>
+</div>
+<p>wis2box environment variables can be categorized via the following core sections:</p>
+<ul class="simple">
+<li><p><strong>Data</strong>: locations of where data is stored as well as retention specifications</p></li>
+<li><p><strong>API</strong>: API configuration for provisioning the OGC API capabilities</p></li>
+<li><p><strong>Logging</strong>: logging configuaration for wis2box</p></li>
+<li><p><strong>PubSub</strong>: PubSub options</p></li>
+<li><p><strong>Other</strong>: other miscellaneous options</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Configuration directives and reference are described below via annotated examples. Changes in configuration
+require a restart of wis2box to take effect. See the <a class="reference internal" href="administration.html#administration"><span class="std std-ref">Administration</span></a> section for information on
+managing wis2box.</p>
+</div>
+<div class="section" id="data">
+<h3>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h3>
+<p>The data configurations provide control of directories on the host machine bound into the Docker volume and
+wis2box. The default relationship below resembles the directory structure within the wis2box volume.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Make sure to use <strong>absolute paths</strong> instead of relative paths.</p>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">WIS2BOX_HOST_DATADIR</span><span class="o">=</span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/wis2box-data <span class="c1"># wis2box host data directory</span>
+<span class="nv">WIS2BOX_DATADIR</span><span class="o">=</span>/data/wis2box  <span class="c1"># wis2box data directory</span>
+<span class="nv">WIS2BOX_DATA_RETENTION_DAYS</span><span class="o">=</span><span class="m">7</span>  <span class="c1"># wis2box data retention time, in days. Data older than this value is</span>
+                               <span class="c1"># is deleted on a daily basis</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="api">
+<h3>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h3>
+<p>API configurations drive control of the OGC API setup.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">WIS2BOX_API_TYPE</span><span class="o">=</span>pygeoapi  <span class="c1"># server tpye</span>
+<span class="nv">WIS2BOX_API_URL</span><span class="o">=</span>http://localhost:8999/pygeoapi  <span class="c1"># public landing page endpoint</span>
+<span class="nv">WIS2BOX_API_CONFIG</span><span class="o">=</span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/docker/pygoeoapi/pygeoapi-config.yml  <span class="c1"># configuration file</span>
+<span class="nv">WIS2BOX_API_BACKEND_TYPE</span><span class="o">=</span>Elasticsearch  <span class="c1"># backend provider type</span>
+<span class="nv">WIS2BOX_API_BACKEND_URL</span><span class="o">=</span>http://elasticsearch:9200  <span class="c1"># internal backend connection URL</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="logging">
+<h3>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h3>
+<p>The logging directives control logging level/severity and output.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">WIS2BOX_LOGGING_LOGLEVEL</span><span class="o">=</span>ERROR  <span class="c1"># the logging level (see https://docs.python.org/3/library/logging.html#logging-levels)</span>
+<span class="nv">WIS2BOX_LOGGING_LOGFILE</span><span class="o">=</span>stdout  <span class="c1"># the full file path to the logfile or ``stdout`` to display on console</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pubsub">
+<h3>PubSub<a class="headerlink" href="#pubsub" title="Permalink to this headline">¶</a></h3>
+<p>PubSub configuration provides connectivity information for the PubSub broker.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">WIS2BOX_BROKER</span><span class="o">=</span>mqtt://wis2box:wis2box@mosquitto/  <span class="c1"># RFC 1738 syntax of internal broker endpoint</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="other">
+<h3>Other<a class="headerlink" href="#other" title="Permalink to this headline">¶</a></h3>
+<p>Additional directives provide various configurationscontrol of configuration options for the deployment of wis2box.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">WIS2BOX_OSCAR_API_TOKEN</span><span class="o">=</span>some_token  <span class="c1"># OSCAR/Surface API token for OSCAR API interaction</span>
+<span class="nv">WIS2BOX_URL</span><span class="o">=</span>http://localhost:8999/  <span class="c1"># public wis2box url</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To access internal containers, URL configurations should point to the named containers as specified in <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>.</p>
+</div>
+<p>A full configuration example can be found below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Required</span>
+<span class="c1"># Host machine data directory path</span>
+<span class="nv">WIS2BOX_HOST_DATADIR</span><span class="o">=</span>/path/to/local/data/directory
+
+<span class="c1"># Optional</span>
+<span class="c1"># Environment variable overrides</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># data paths and retention</span>
+<span class="nv">WIS2BOX_DATADIR</span><span class="o">=</span>/data/wis2box
+<span class="nv">WIS2BOX_DATA_RETENTION_DAYS</span><span class="o">=</span><span class="m">7</span>
+
+<span class="c1"># API</span>
+<span class="nv">WIS2BOX_API_TYPE</span><span class="o">=</span>pygeoapi
+<span class="nv">WIS2BOX_API_URL</span><span class="o">=</span>http://localhost:8999/pygeoapi
+<span class="nv">WIS2BOX_API_CONFIG</span><span class="o">=</span>/data/wis2box/pygeoapi-config.yml
+<span class="nv">WIS2BOX_API_BACKEND_TYPE</span><span class="o">=</span>Elasticsearch
+<span class="nv">WIS2BOX_API_BACKEND_URL</span><span class="o">=</span>http://elasticsearch:9200
+
+<span class="c1"># logging</span>
+<span class="nv">WIS2BOX_LOGGING_LOGLEVEL</span><span class="o">=</span>ERROR
+<span class="nv">WIS2BOX_LOGGING_LOGFILE</span><span class="o">=</span>stdout
+
+<span class="c1"># PubSub</span>
+<span class="nv">WIS2BOX_BROKER</span><span class="o">=</span>mqtt://wis2box:wis2box@mosquitto/
+
+<span class="c1"># other</span>
+<span class="nv">WIS2BOX_OSCAR_API_TOKEN</span><span class="o">=</span>some_token
+<span class="nv">WIS2BOX_URL</span><span class="o">=</span>http://localhost:8999/
+
+<span class="c1"># mappings of topic hierarchy to wis2box data plugins</span>
+<span class="c1"># optionally override default mappings from wis2box data plugins</span>
+<span class="c1"># WIS2BOX_DATADIR_DATA_MAPPINGS=${PWD}/wis2box-data-mappings.yml</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="docker-compose">
+<h2>Docker Compose<a class="headerlink" href="#docker-compose" title="Permalink to this headline">¶</a></h2>
+<p>The Docker Compose setup is driven from the resulting <code class="docutils literal notranslate"><span class="pre">dev.env</span></code> file created. For advanced cases and/or power users,
+updates can also be made to <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> or <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yml</span></code> (for changes to ports).</p>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>At this point, you have defined the runtime configuration required to administer your wis2box installation.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="administration.html"
+                        title="next chapter">Administration</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><p>
+    <p>
+        <a title="World Meteorological Organization" href="https://public.wmo.int"><img style="background: white;" title="WMO logo" alt="WMO logo" src="https://public.wmo.int/sites/all/themes/wmo/logo.png"/></a>
+    </p>
+</p>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="administration.html" title="Administration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wis2box 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2022, World Meteorological Organization (WMO)&lt;br/&gt;This work is licensed under a Creative Commons Attribution 4.0 International License.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>How wis2box works &#8212; wis2box 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="WIS 2.0" href="wis2.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="wis2.html" title="WIS 2.0"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wis2box 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="how-wis2box-works">
+<span id="id1"></span><h1>How wis2box works<a class="headerlink" href="#how-wis2box-works" title="Permalink to this headline">¶</a></h1>
+<p>wis2box is implemented in the spirit of the <a class="reference external" href="https://12factor.net">Twelve-Factor App methodology</a>.</p>
+<p>wis2box is a <a class="reference external" href="https://www.docker.com">Docker</a> and <a class="reference external" href="https://www.python.org">Python</a>-based platform with the capabilities
+for centres to integrate their data holdings and publish them to
+the WMO Information System with a plug and play capability supporting
+data publishing, discovery and access.</p>
+<div class="section" id="high-level-system-context">
+<h2>High level system context<a class="headerlink" href="#high-level-system-context" title="Permalink to this headline">¶</a></h2>
+<p>The following diagram provides a high level overview of the main functions
+of wis2box:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/c4-system-context.png"><img alt="how wis2box works: System context" src="_images/c4-system-context.png" style="width: 693.6999999999999px; height: 571.9px;" /></a>
+</div>
+<p>Core wis2box functionality includes the ability to:</p>
+<ul class="simple">
+<li><p>integrate your existing data processing pipeline</p></li>
+<li><p>cache station metadata from the <a class="reference external" href="https://oscar.wmo.int/surface">OSCAR/Surface</a> station metadata management
+tool</p></li>
+<li><p>process and transform your weather/climate/water data into official WMO data formats</p></li>
+<li><p>create and publish discovery metadata of your datasets</p></li>
+<li><p>provide your data via OGC and PubSub standards mechanisms to your data, enabling
+easy access for web applications, desktop GIS tools, mobile applications</p></li>
+<li><p>connect your wis2box to the WIS 2.0 network</p></li>
+<li><p>make your data and services available to market search engines</p></li>
+<li><p>subscribe to and download weather/climate/water data from the WIS 2.0 network</p></li>
+</ul>
+</div>
+<div class="section" id="docker-compose">
+<h2>Docker Compose<a class="headerlink" href="#docker-compose" title="Permalink to this headline">¶</a></h2>
+<p>wis2box is built as <a class="reference external" href="https://docs.docker.com/compose">Docker Compose</a> application, allowing for easy install and container
+management.</p>
+</div>
+<div class="section" id="container-workflow">
+<h2>Container workflow<a class="headerlink" href="#container-workflow" title="Permalink to this headline">¶</a></h2>
+<p>Let’s dive a little deeper. The following diagram provides a view of all
+wis2box containers:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/c4-container.png"><img alt="how wis2box works: Containers" src="_images/c4-container.png" style="width: 756.0px; height: 564.9px;" /></a>
+</div>
+<p>Container functionality can be described as follows:</p>
+<ul class="simple">
+<li><p><strong>Data Consumer</strong>: the data entry point of wis2box. Data pipelines and
+workflow begins here</p></li>
+<li><p><strong>Data Management</strong>: the epicentre of wis2box. Provides core wis2box
+administration and data/workflow/publising utilities</p></li>
+<li><p><strong>Storage</strong>: core data persistence</p></li>
+<li><p><strong>API Application</strong>: OGC APIs providing geospatial web services</p></li>
+<li><p><strong>Web Application</strong>: user interface</p></li>
+</ul>
+</div>
+<div class="section" id="technology">
+<h2>Technology<a class="headerlink" href="#technology" title="Permalink to this headline">¶</a></h2>
+<p>wis2box is built on free and open source (FOSS) technology.</p>
+<table class="docutils align-left">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Container</p></th>
+<th class="head"><p>Function</p></th>
+<th class="head"><p>Technology</p></th>
+<th class="head"><p>Standards</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Data Consumer</p></td>
+<td><p>PubSub</p></td>
+<td><p><a class="reference external" href="https://mosquitto.org">mosquitto</a></p></td>
+<td><p>MQTT</p></td>
+</tr>
+<tr class="row-odd"><td><p>Data Management</p></td>
+<td><p>data processing and publishing</p></td>
+<td><p><a class="reference external" href="https://geopython.github.io/pygeometa">pygeometa</a> <a class="reference external" href="https://github.com/wmo-cop/pyoscar">pyoscar</a></p></td>
+<td><p><abbr title="WMO Core Metadata Profile">WCMP</abbr> <abbr title="WIGOS Metadata Record">WMDR</abbr></p></td>
+</tr>
+<tr class="row-even"><td><p>API Application</p></td>
+<td><p>data discovery and access</p></td>
+<td><p><a class="reference external" href="https://pygeoapi.io">pygeoapi</a> <a class="reference external" href="https://www.elastic.co/elasticsearch">Elasticsearch</a></p></td>
+<td><p>OGC API</p></td>
+</tr>
+<tr class="row-odd"><td><p>Web Application</p></td>
+<td><p>data discovery and visualization</p></td>
+<td><p><a class="reference external" href="https://vuejs.org">Vue.js</a> <a class="reference external" href="https://leafletjs.com">Leaflet</a></p></td>
+<td><p>OGC API</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="wis2.html"
+                        title="previous chapter">WIS 2.0</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">Installation</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><p>
+    <p>
+        <a title="World Meteorological Organization" href="https://public.wmo.int"><img style="background: white;" title="WMO logo" alt="WMO logo" src="https://public.wmo.int/sites/all/themes/wmo/logo.png"/></a>
+    </p>
+</p>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="wis2.html" title="WIS 2.0"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wis2box 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2022, World Meteorological Organization (WMO)&lt;br/&gt;This work is licensed under a Creative Commons Attribution 4.0 International License.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

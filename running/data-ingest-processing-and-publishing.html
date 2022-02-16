@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Data ingest, processing and publishing &#8212; wis2box 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API publishing" href="api-publishing.html" />
+    <link rel="prev" title="Discovery metadata" href="discovery-metadata.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="api-publishing.html" title="API publishing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="discovery-metadata.html" title="Discovery metadata"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">wis2box 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Running</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="data-ingest-processing-and-publishing">
+<span id="id1"></span><h1>Data ingest, processing and publishing<a class="headerlink" href="#data-ingest-processing-and-publishing" title="Permalink to this headline">¶</a></h1>
+<p>At this point, the system is ready for ingest/processing and publishing.</p>
+<p>Data ingest, processing and publishing can be run in automated fashion or via
+the wis2box CLI. Data is ingested, processed, and published  as WMO BUFR data,
+as well GeoJSON features.</p>
+<div class="section" id="interactive-ingest-processing-and-publishing">
+<h2>Interactive ingest, processing and publishing<a class="headerlink" href="#interactive-ingest-processing-and-publishing" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>wis2box</cite> CLI provides a data subsystem to process data interactively. CLI
+data ingest/processing/publishing can be run with explicit or implicit topic
+hierarchy routing (which needs to be tied to the pipeline via the <a class="reference internal" href="data-mappings.html#data-mappings"><span class="std std-ref">Data mappings</span></a>).</p>
+<div class="section" id="explicit-topic-hierarchy-workflow">
+<h3>Explicit topic hierarchy workflow<a class="headerlink" href="#explicit-topic-hierarchy-workflow" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># process a single CSV file</span>
+wis2box data ingest --topic-hierarchy foo.bar.baz -p /path/to/file.csv
+
+<span class="c1"># process a directory of CSV files</span>
+wis2box data ingest --topic-hierarchy foo.bar.baz -p /path/to/dir
+
+<span class="c1"># process a directory of CSV files recursively</span>
+wis2box data ingest --topic-hierarchy foo.bar.baz -p /path/to/dir -r
+</pre></div>
+</div>
+</div>
+<div class="section" id="implicit-topic-hierarchy-workflow">
+<h3>Implicit topic hierarchy workflow<a class="headerlink" href="#implicit-topic-hierarchy-workflow" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># process incoming data; topic hierarchy is inferred from fuzzy filepath equivalent</span>
+<span class="c1"># wis2box will detect &#39;foo/bar/baz&#39; as topic hierarchy &#39;foo.bar.baz&#39;</span>
+wis2box data ingest -p /path/to/foo/bar/baz/data/file.csv
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="event-driven-ingest-processing-and-publishing">
+<h2>Event driven ingest, processing and publishing<a class="headerlink" href="#event-driven-ingest-processing-and-publishing" title="Permalink to this headline">¶</a></h2>
+<p>One all metadata, topic hierarchies, and data configurations are setup, event driven workflow
+will immediately start to listen on files in <code class="docutils literal notranslate"><span class="pre">WIS2BOX_DATADIR/data/incoming</span></code> as they are
+placed in the appropriate topic hierarchy directory.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>wis2box can make <code class="docutils literal notranslate"><span class="pre">WIS2BOX/data/incoming</span></code> accessible via webdav by enabling <code class="docutils literal notranslate"><span class="pre">docker/docker-compose.webdav.yml</span></code>.</p>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>Congratulations! At this point, you have successfully setup a wis2box data pipeline. Data should be flowing through
+the system.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="discovery-metadata.html"
+                        title="previous chapter">Discovery metadata</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="api-publishing.html"
+                        title="next chapter">API publishing</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><p>
+    <p>
+        <a title="World Meteorological Organization" href="https://public.wmo.int"><img style="background: white;" title="WMO logo" alt="WMO logo" src="https://public.wmo.int/sites/all/themes/wmo/logo.png"/></a>
+    </p>
+</p>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="api-publishing.html" title="API publishing"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="discovery-metadata.html" title="Discovery metadata"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">wis2box 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Running</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2022, World Meteorological Organization (WMO)&lt;br/&gt;This work is licensed under a Creative Commons Attribution 4.0 International License.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

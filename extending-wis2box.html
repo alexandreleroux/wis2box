@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Extending wis2box &#8212; wis2box 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Development" href="development.html" />
+    <link rel="prev" title="Data access" href="data-access.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="development.html" title="Development"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="data-access.html" title="Data access"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wis2box 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="extending-wis2box">
+<span id="id1"></span><h1>Extending wis2box<a class="headerlink" href="#extending-wis2box" title="Permalink to this headline">¶</a></h1>
+<p>At its core, wis2box is a plugin architecture orchestrating all the required components of a node in
+the WIS 2.0 network. Driven by topic hierarchies, wis2box can be used to process and publish any type
+of geospatial data beyond the requirements of the WIS 2.0 itself.</p>
+<p>In this section we will to explore how wis2box can be extended. wis2box plugin development requires
+knowledge of how to program in Python as well as Python’s packaging and module system.</p>
+<div class="section" id="building-your-own-data-plugin">
+<h2>Building your own data plugin<a class="headerlink" href="#building-your-own-data-plugin" title="Permalink to this headline">¶</a></h2>
+<p>The heart of a wis2box data plugin is driven from the <code class="docutils literal notranslate"><span class="pre">wis2box.data.base</span></code> abstract base class (ABC)
+located in <code class="docutils literal notranslate"><span class="pre">wis2box/data/base.py</span></code>. Any wis2box plugin needs to inherit from
+<code class="docutils literal notranslate"><span class="pre">wis2box.data.base.BaseAbstractData</span></code>. A minimal example can be found below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">wis2box.data.abse</span> <span class="kn">import</span> <span class="n">BaseAbstractData</span>
+
+<span class="k">class</span> <span class="nc">MyCoolData</span><span class="p">(</span><span class="n">BaseAbstractData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Observation data&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_hierarchy</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">topic_hierarchy</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="c1"># transform data</span>
+        <span class="c1"># populate self.output_data with a dict as per:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_data</span> <span class="p">[{</span>
+            <span class="s1">&#39;_meta&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;identifier&#39;</span><span class="p">:</span> <span class="s1">&#39;c123&#39;</span>
+                <span class="s1">&#39;data_date&#39;</span><span class="p">:</span> <span class="n">datetime_object</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;bufr4&#39;</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">(</span><span class="mi">12356</span><span class="p">),</span>
+            <span class="s1">&#39;geojson&#39;</span><span class="p">:</span> <span class="n">geojson_string</span>
+        <span class="p">}]</span>
+        <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>The key function that plugin needs to implement is the <code class="docutils literal notranslate"><span class="pre">transform</span></code> function. This function
+should return a <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code> of the result of the processing, as well as populate
+the <code class="docutils literal notranslate"><span class="pre">output_data</span></code> property.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">output_data</span></code> property should provide a <code class="docutils literal notranslate"><span class="pre">list</span></code> of objects with the following properties:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_meta</span></code>: object with identifier and Python <a class="reference external" href="https://docs.python.org/3/library/datetime.html">datetime</a> objects based on the observed datetime of the data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;format-extension&gt;</span></code>: 1..n properties for each format representation, with the key being the filename
+extension. The value of this property can be a string or bytes, depending on whether the underlying data
+is ASCII or binary, for example</p></li>
+</ul>
+</div>
+<div class="section" id="example-plugins">
+<h2>Example plugins<a class="headerlink" href="#example-plugins" title="Permalink to this headline">¶</a></h2>
+<p>An example plugin for proof of concept can be found in <a class="reference external" href="https://github.com/wmo-cop/wis2box-malawi-observations">https://github.com/wmo-cop/wis2box-malawi-observations</a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="data-access.html"
+                        title="previous chapter">Data access</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="development.html"
+                        title="next chapter">Development</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><p>
+    <p>
+        <a title="World Meteorological Organization" href="https://public.wmo.int"><img style="background: white;" title="WMO logo" alt="WMO logo" src="https://public.wmo.int/sites/all/themes/wmo/logo.png"/></a>
+    </p>
+</p>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="development.html" title="Development"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="data-access.html" title="Data access"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wis2box 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2022, World Meteorological Organization (WMO)&lt;br/&gt;This work is licensed under a Creative Commons Attribution 4.0 International License.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

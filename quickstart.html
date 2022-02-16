@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Quickstart &#8212; wis2box 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="WIS 2.0" href="wis2.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="wis2.html" title="WIS 2.0"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wis2box 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="quickstart">
+<span id="id1"></span><h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<p>Download wis2box and start using Malawi test data:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/wmo-im/wis2box.git
+<span class="nb">cd</span> wis2box
+</pre></div>
+</div>
+<p>For the purposes of a quickstart, this deployment expects the test environment, which includes data and metadata. This
+is done by using the test environment file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp tests/test.env dev.env
+vi dev.env
+<span class="c1"># ensure WIS2BOX_HOST_DATADIR is set to a local path on disk for persistent storage</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information on deployment, see <a class="reference internal" href="administration.html#administration"><span class="std std-ref">Administration</span></a> and <a class="reference internal" href="configuration.html#configuration"><span class="std std-ref">Configuration</span></a></p>
+</div>
+<p>Start wis2box with Docker Compose and login to the wis2box container:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 wis2box-ctl.py start
+python3 wis2box-ctl.py status --all <span class="c1"># The --all flag shows all containers, even ones that are down.</span>
+python3 wis2box-ctl.py login
+</pre></div>
+</div>
+<p>Once logged in, create the enviroment and verify it is correct:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wis2box environment create
+wis2box environment show
+</pre></div>
+</div>
+<p>Setup observation data processing and API publication:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wis2box data setup --topic-hierarchy data.core.observations-surface-land.mw.FWCL.landFixed
+wis2box api add-collection --topic-hierarchy data.core.observations-surface-land.mw.FWCL.landFixed <span class="nv">$WIS2BOX_DATADIR</span>/metadata/discovery/surface-weather-observations.yml
+</pre></div>
+</div>
+<p>Publish station collection and discovery metadata to the API:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wis2box metadata station cache <span class="nv">$WIS2BOX_DATADIR</span>/metadata/station/station_list.csv
+wis2box metadata station publish-collection
+wis2box metadata discovery publish <span class="nv">$WIS2BOX_DATADIR</span>/metadata/discovery/surface-weather-observations.yml
+</pre></div>
+</div>
+<p>Process data via CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wis2box data ingest --topic-hierarchy data.core.observations-surface-land.mw.FWCL.landFixed --path <span class="nv">$WIS2BOX_DATADIR</span>/observations/WIGOS_0-454-2-AWSNAMITAMBO_2021-07-07.csv
+wis2box api add-collection-items --recursive --path <span class="nv">$WIS2BOX_DATADIR</span>/data/public
+</pre></div>
+</div>
+<p>Logout of wis2box container:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">exit</span>
+</pre></div>
+</div>
+<p>Restart wis2box:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 wis2box-ctl.py start
+</pre></div>
+</div>
+<p>From here, you can run <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">wis2box-ctl.py</span></code> to confirm that containers are running.</p>
+<p>In your web browser you should be able to open <a class="reference external" href="http://localhost:8999">http://localhost:8999</a> as well as
+<a class="reference external" href="http://localhost:8999/pygeoapi/collections">http://localhost:8999/pygeoapi/collections</a> to further explore wis2box.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="previous chapter">Overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="wis2.html"
+                        title="next chapter">WIS 2.0</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><p>
+    <p>
+        <a title="World Meteorological Organization" href="https://public.wmo.int"><img style="background: white;" title="WMO logo" alt="WMO logo" src="https://public.wmo.int/sites/all/themes/wmo/logo.png"/></a>
+    </p>
+</p>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="wis2.html" title="WIS 2.0"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">wis2box 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2022, World Meteorological Organization (WMO)&lt;br/&gt;This work is licensed under a Creative Commons Attribution 4.0 International License.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

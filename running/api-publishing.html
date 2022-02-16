@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>API publishing &#8212; wis2box 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data retention" href="data-retention.html" />
+    <link rel="prev" title="Data ingest, processing and publishing" href="data-ingest-processing-and-publishing.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="data-retention.html" title="Data retention"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="data-ingest-processing-and-publishing.html" title="Data ingest, processing and publishing"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">wis2box 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Running</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="api-publishing">
+<span id="id1"></span><h1>API publishing<a class="headerlink" href="#api-publishing" title="Permalink to this headline">¶</a></h1>
+<p>At this stage:</p>
+<ul class="simple">
+<li><p>station metadata has been configured</p></li>
+<li><p>discovery metadata has been created</p></li>
+<li><p>data pipelines are configured and running</p></li>
+</ul>
+<p>Let’s dive into publishing the data and metadata:</p>
+<p>wis2box provides an API supporting the <a class="reference external" href="https://ogcapi.ogc.org">OGC API</a> standards using <a class="reference external" href="https://pygeoapi.io">pygeoapi</a>.</p>
+<div class="section" id="station-metadata-api-publishing">
+<h2>Station metadata API publishing<a class="headerlink" href="#station-metadata-api-publishing" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to publish our station metadata to the API. The command below
+will generate local station collection GeoJSON for pygeoapi publication.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wis2box metadata station publish-collection
+</pre></div>
+</div>
+</div>
+<div class="section" id="discovery-metadata-api-publishing">
+<h2>Discovery metadata API publishing<a class="headerlink" href="#discovery-metadata-api-publishing" title="Permalink to this headline">¶</a></h2>
+<p>This step will publish dataset discovery metadata to the API.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wis2box metadata discovery publish /path/to/discovery-metadata.yml
+</pre></div>
+</div>
+</div>
+<div class="section" id="dataset-collection-api-publishing">
+<h2>Dataset collection API publishing<a class="headerlink" href="#dataset-collection-api-publishing" title="Permalink to this headline">¶</a></h2>
+<p>The below command will add the dataset collection to pygeoapi from the
+discovery metadata MCF created as described in the <a class="reference internal" href="discovery-metadata.html#discovery-metadata"><span class="std std-ref">Discovery metadata</span></a> section.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wis2box api add-collection <span class="nv">$WIS2BOX_DATADIR</span>/data/config/foo/bar/baz/discovery-metadata.yml --topic-hierarchy foo.bar.baz
+</pre></div>
+</div>
+<p>To delete the colection from the API backend and configuration:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wis2box api delete-collection --topic-hierarchy foo.bar.baz
+</pre></div>
+</div>
+<p>Note that the data itself is being published to the API backend automatically given the event
+driven workflow. If manual ingest is needed, the following command can be run in interactive mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wis2box api add-collection-items --topic-hierarchy foo.bar.baz
+</pre></div>
+</div>
+</div>
+<div class="section" id="api-container-restart">
+<h2>API container restart<a class="headerlink" href="#api-container-restart" title="Permalink to this headline">¶</a></h2>
+<p>Any change to API configuration requires a restart of the API container, which can be run via the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 wis2box-ctl.py restart wis2box
+</pre></div>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>At this point, you have successfully published the required data and metadata collections to the API.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="data-ingest-processing-and-publishing.html"
+                        title="previous chapter">Data ingest, processing and publishing</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="data-retention.html"
+                        title="next chapter">Data retention</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><p>
+    <p>
+        <a title="World Meteorological Organization" href="https://public.wmo.int"><img style="background: white;" title="WMO logo" alt="WMO logo" src="https://public.wmo.int/sites/all/themes/wmo/logo.png"/></a>
+    </p>
+</p>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="data-retention.html" title="Data retention"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="data-ingest-processing-and-publishing.html" title="Data ingest, processing and publishing"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">wis2box 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Running</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2022, World Meteorological Organization (WMO)&lt;br/&gt;This work is licensed under a Creative Commons Attribution 4.0 International License.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>
